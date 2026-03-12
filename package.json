@@ -1,0 +1,56 @@
+{
+  "name": "@minamorl/cray",
+  "version": "1.0.3",
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist"
+  ],
+  "description": "A composable, type-safe workflow engine built on optics. Define tasks, sequences, parallel steps, branches, and error recovery — then compile and execute them as directed graphs.",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "npm run clean && tsc --build",
+    "clean": "rm -rf dist tsconfig.tsbuildinfo",
+    "test": "jest --runInBand",
+    "lint": "eslint 'src/**/*.ts' --ignore-pattern '**/*.d.ts'"
+  },
+  "keywords": [
+    "workflow",
+    "pipeline",
+    "task",
+    "graph",
+    "composable",
+    "optics",
+    "typescript"
+  ],
+  "author": "minamorl",
+  "license": "MIT",
+  "dependencies": {
+    "@minamorl/lay": "^0.0.2",
+    "@minamorl/root-core": "^0.1.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.14",
+    "@types/node": "^24.5.0",
+    "@typescript-eslint/eslint-plugin": "^8.44.0",
+    "@typescript-eslint/parser": "^8.44.0",
+    "eslint": "^9.35.0",
+    "eslint-config-prettier": "^10.1.8",
+    "fast-check": "^4.3.0",
+    "jest": "^29.7.0",
+    "prettier": "^3.6.2",
+    "ts-jest": "29",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.2",
+    "typescript-eslint": "^8.44.0"
+  }
+}

@@ -1,0 +1,13 @@
+node_modules/
+dist/
+build/
+*.tsbuildinfo
+*.log
+npm-debug.log*
+.DS_Store
+.vscode/
+.idea/
+*.js.map
+src/*.js
+src/*.d.ts
+src/*.d.ts.map
