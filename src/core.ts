@@ -19,12 +19,12 @@ export type Cray<S = Record<string, unknown>, E = unknown> = (
   focus: Focus<S>,
 ) => Promise<Result<S, E>>;
 
-type StepReturn<S = Record<string, unknown>, E = unknown> =
+export type StepReturn<S = Record<string, unknown>, E = unknown> =
   | Result<S, E>
   | S
   | void
   | Promise<Result<S, E> | S | void>;
-type Step<S = Record<string, unknown>, E = unknown> = (
+export type Step<S = Record<string, unknown>, E = unknown> = (
   focus: Focus<S>,
 ) => StepReturn<S, E>;
 
@@ -142,6 +142,25 @@ function normalizeStep<S, E>(step: Step<S, E> | Cray<S, E>): Cray<S, E> {
 
   const wrapped: Cray<S, E> = (focus: Focus<S>) => runStep(step, focus);
   return withDefinition(wrapped, { kind: 'task', step: step as Step<S, E> });
+}
+
+/**
+ * Lift a plain Step into the Cray category.
+ *
+ * This is the natural transformation from the "loose step" category
+ * (where functions return `S | void | Result<S,E>`) into the "Cray" category
+ * (where functions return `Promise<Result<S,E>>`).
+ *
+ * The transformation:
+ * 1. Normalizes return values: `S | void | Result<S,E>` → `Result<S,E>`
+ * 2. Captures exceptions: `throw` → `Failure<S,E>`
+ * 3. Annotates with metadata: `CRAY_META` symbol for observability
+ * 4. Is idempotent: already-lifted `Cray` values pass through unchanged
+ */
+export function lift<S = Record<string, unknown>, E = unknown>(
+  step: Step<S, E> | Cray<S, E>,
+): Cray<S, E> {
+  return normalizeStep(step);
 }
 
 export function cray<S = Record<string, unknown>, E = unknown>(
