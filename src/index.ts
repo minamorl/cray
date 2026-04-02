@@ -3,6 +3,8 @@ export type {
   Success,
   Failure,
   Cray,
+  Step,
+  StepReturn,
   Reducer,
   Predicate,
   TaskDefinition,
@@ -13,7 +15,7 @@ export type {
   CrayDefinition,
   AnnotatedCray,
 } from './core';
-export { definitionOf, cray, elseCray, else_, parallel, branch } from './core';
+export { definitionOf, cray, lift, elseCray, else_, parallel, branch } from './core';
 export type { Graph, Node, ExecuteHooks } from './graph';
 export { compile, execute } from './graph';
 export { toMermaid } from './graphViz';
