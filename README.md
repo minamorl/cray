@@ -159,6 +159,32 @@ const unsubscribe = attachCray(root, myWorkflow, {
 // Later: unsubscribe() to stop
 ```
 
+### `lift(step)`
+
+Convert a plain step function into a normalized `Cray<S, E>`. This is the natural transformation from `Step` to `Cray` — it wraps raw return values (`S`, `void`, thrown errors) into proper `Result<S, E>` values:
+
+```typescript
+import { lift } from '@minamorl/cray';
+
+// A plain function that just returns state
+const step = (focus: Focus<{ count: number }>) => ({
+  count: focus.get().count + 1,
+});
+
+// lift turns it into a full Cray function
+const lifted = lift(step);
+// lifted: Cray<{ count: number }, unknown>
+// Returns Result<S, E> with ok: true
+```
+
+`lift` handles all `Step` return types:
+- **Returns `S`** → wrapped as `Success<S>`
+- **Returns `void`/`undefined`** → current state preserved as `Success<S>`
+- **Returns `Result<S, E>`** → passed through unchanged
+- **Throws** → caught and wrapped as `Failure<S, E>`
+
+This is useful when you want to use plain functions in contexts that expect `Cray<S, E>`, or when building higher-order workflow combinators.
+
 ### `definitionOf(cray)`
 
 Introspect the structural definition of a cray function. Returns `CrayDefinition` with `kind` (`'task'`, `'sequence'`, `'else'`, `'parallel'`, `'branch'`) and relevant metadata.
